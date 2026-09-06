@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GPX-Downloads · Fußbus fährt immer!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B2D42;
+    --panel:#343651;
+    --rail:#464A66;
+    --chalk:#EDF2F4;
+    --dim:#8D99AE;
+    --signal:#EF233C;
+    --deep:#D90429;
+    --blind:#1C1E2E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--chalk);
+    font-family:"Barlow","Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+
+  .blind{
+    background:var(--blind);border:1px solid var(--rail);border-radius:3px;
+    padding:18px 20px 16px;box-shadow:inset 0 0 44px rgba(239,35,60,.07);
+  }
+  .blind .route-no{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+    font-size:clamp(30px,6.6vw,54px);line-height:.95;color:var(--signal);
+    letter-spacing:.01em;margin:0;
+  }
+  .blind .dest{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;
+    font-size:clamp(17px,3.6vw,23px);font-weight:500;color:#B8607A;
+    margin:6px 0 0;line-height:1.2;
+  }
+  .lede{color:var(--dim);max-width:62ch;margin:22px 0 0;font-size:15px}
+  .lede b{color:var(--chalk);font-weight:600}
+
+  .back{display:inline-block;margin-top:18px;color:var(--dim);font-size:14px;text-decoration:none;border-bottom:1px solid var(--rail)}
+  .back:hover{color:var(--chalk);border-color:var(--signal)}
+
+  h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:26px;margin:46px 0 4px;letter-spacing:.01em}
+  .sub{color:var(--dim);font-size:14px;margin:0 0 16px}
+
+  .grid{display:grid;gap:10px;margin-top:16px}
+  .m{
+    background:var(--panel);border:1px solid var(--rail);border-radius:4px;
+    display:grid;grid-template-columns:76px 1fr auto;gap:14px;align-items:center;
+    padding:14px 16px;
+  }
+  .m .badge{
+    background:var(--blind);border:1px solid var(--rail);border-radius:2px;
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+    font-size:23px;color:var(--signal);text-align:center;padding:7px 4px 5px;letter-spacing:.02em;
+  }
+  .m .op{display:block;font-size:10.5px;color:var(--dim);font-weight:500;letter-spacing:.06em;margin-top:2px}
+  .m h3{margin:0;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:20px;line-height:1.2}
+  .m p{margin:3px 0 0;font-size:13.5px;color:var(--dim);line-height:1.45}
+  .dl{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+  .dl a{
+    background:var(--blind);border:1px solid var(--rail);border-radius:2px;
+    color:var(--chalk);text-decoration:none;font-size:13px;font-weight:500;
+    padding:7px 12px;white-space:nowrap;text-align:center;transition:border-color .2s,color .2s;
+  }
+  .dl a:hover{border-color:var(--signal);color:var(--signal)}
+  .dl a.full{color:var(--dim)}
+  .dl a.full:hover{color:var(--signal);border-color:var(--signal)}
+
+  .allbtn{
+    display:inline-block;margin-top:6px;background:var(--blind);border:1px solid var(--rail);
+    color:var(--chalk);text-decoration:none;font-size:13.5px;font-weight:500;
+    padding:9px 16px;border-radius:3px;transition:border-color .2s,color .2s;
+  }
+  .allbtn:hover{border-color:var(--signal);color:var(--signal)}
+
+  @media (max-width:560px){
+    .m{grid-template-columns:1fr;gap:10px}
+    .dl{flex-direction:row;flex-wrap:wrap}
+    .dl a{flex:1}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="blind">
+    <p class="route-no">GPX-DOWNLOADS</p>
+    <p class="dest">Fußbus fährt immer! · Castrop-Rauxel · 16 Linien</p>
+  </header>
+
+  <p class="lede">Track-Dateien zu allen 16 Buslinien aus der Challenge — als GPX zum Laden in Komoot, OsmAnd, Garmin & Co. Pro Linie gibt es zwei Varianten: <b>Castrop-Anteil</b> (nur das Stück, das gewertet wird) und <b>komplette Linie</b> (die ganze Strecke bis zur Endhaltestelle, auch außerhalb der Stadt).</p>
+  <a class="back" href="index.html">← zurück zur Challenge</a>
+
+  <h2>Alle Linien</h2>
+  <p class="sub">Sortiert nach Liniennummer. Tracks stammen aus OpenStreetMap-Daten.</p>
+  <div class="grid" id="grid"></div>
+
+</div>
+
+<script>
+const FILES = [
+  {id:"233", op:"Vestische", title:"Henrichenburg-Zipfel", castrop:"233_Bus_233_Castrop_Rauxel_Henrichenburg_Mitte_Recklingh_CAS.gpx", full:"233_Bus_233_Castrop_Rauxel_Henrichenburg_Mitte_Recklingh.gpx"},
+  {id:"237", op:"Vestische", title:"Nordkorridor", castrop:"237_Bus_237_Recklinghausen_Hbf_Castrop_Rauxel_M_nsterpla_CAS.gpx", full:"237_Bus_237_Recklinghausen_Hbf_Castrop_Rauxel_M_nsterpla.gpx"},
+  {id:"311", op:"HCR", title:"Grenzgang Sodingen", castrop:"311_Bus_311_Castrop_Rauxel_M_nsterplatz_Teutoburgia_Hern_CAS.gpx", full:"311_Bus_311_Castrop_Rauxel_M_nsterplatz_Teutoburgia_Hern.gpx"},
+  {id:"324", op:"HCR", title:"LAGO-Achse", castrop:"324_Bus_324_Castrop_Rauxel_M_nsterplatz_Herne_Bahnhof_CAS.gpx", full:"324_Bus_324_Castrop_Rauxel_M_nsterplatz_Herne_Bahnhof.gpx"},
+  {id:"341", op:"HCR", title:"Schwerin-Schleife", castrop:"341_Bus_341_Castrop_Rauxel_M_nsterplatz_Schwerin_Seniore_CAS.gpx", full:"341_Bus_341_Castrop_Rauxel_M_nsterplatz_Schwerin_Seniore.gpx"},
+  {id:"347", op:"HCR", title:"Krankenhaus-Runde", castrop:"347_Bus_347_Evangelisches_Krankenhaus_Castrop_Rauxel_M_n_CAS.gpx", full:"347_Bus_347_Evangelisches_Krankenhaus_Castrop_Rauxel_M_n.gpx"},
+  {id:"351", op:"HCR", title:"Gewerbegebiet Westring", castrop:"351_Bus_351_Herne_Mitte_Castrop_Rauxel_M_nsterplatz_CAS.gpx", full:"351_Bus_351_Herne_Mitte_Castrop_Rauxel_M_nsterplatz.gpx"},
+  {id:"353", op:"Bogestra", title:"Südgrenze", castrop:"353_Bus_353_Blankensteiner_Stra_e_Castrop_M_nsterplatz_CAS.gpx", full:"353_Bus_353_Blankensteiner_Stra_e_Castrop_M_nsterplatz.gpx"},
+  {id:"361", op:"HCR", title:"Deininghausen–Dingen", castrop:"361_Bus_361_Dortmund_Mengede_Markt_Castrop_Rauxel_M_nste_CAS.gpx", full:"361_Bus_361_Dortmund_Mengede_Markt_Castrop_Rauxel_M_nste.gpx"},
+  {id:"364", op:"Bogestra", title:"Obercastrop-Schleife", castrop:"364_Bus_364_Sportplatz_Papenholz_Castrop_M_nsterplatz_CAS.gpx", full:"364_Bus_364_Sportplatz_Papenholz_Castrop_M_nsterplatz.gpx"},
+  {id:"378", op:"Bogestra", title:"Uni-Linie", castrop:"378_Bus_378_Ruhr_Universit_t_Castrop_M_nsterplatz_CAS.gpx", full:"378_Bus_378_Ruhr_Universit_t_Castrop_M_nsterplatz.gpx"},
+  {id:"480", op:"DSW21", title:"Marten–Ickern", castrop:"480_Bus_480_Marten_Ickern_CAS.gpx", full:"480_Bus_480_Marten_Ickern.gpx"},
+  {id:"481", op:"DSW21", title:"Königsetappe", castrop:"481_Bus_481_Castrop_Becklem_CAS.gpx", full:"481_Bus_481_Castrop_Becklem.gpx"},
+  {id:"482", op:"DSW21", title:"Ickern-Schleife", castrop:"482_Bus_482_Mengede_Schwerin_CAS.gpx", full:"482_Bus_482_Mengede_Schwerin.gpx"},
+  {id:"NE11", op:"DSW21", title:"NachtExpress-Ring", castrop:"NE11_Bus_NE11_Ickern_Reinoldikirche_CAS.gpx", full:"NE11_Bus_NE11_Ickern_Reinoldikirche.gpx"},
+  {id:"SB22", op:"Vestische", title:"Schnellbus nach Datteln", castrop:"SB22_Bus_SB22_Datteln_Bus_Bf_Castrop_Rauxel_M_nsterplatz_CAS.gpx", full:"SB22_Bus_SB22_Datteln_Bus_Bf_Castrop_Rauxel_M_nsterplatz.gpx"}
+];
+
+const grid = document.getElementById("grid");
+FILES.forEach(f=>{
+  const el = document.createElement("div");
+  el.className = "m";
+  el.innerHTML =
+    '<div class="badge">'+f.id+'<span class="op">'+f.op+'</span></div>'+
+    '<div><h3>'+f.title+'</h3>'+
+    '<p>GPX-Track dieser Linie, geeignet für Komoot, OsmAnd, Garmin & Co.</p></div>'+
+    '<div class="dl">'+
+      '<a href="gpx/castrop/'+encodeURIComponent(f.castrop)+'" download>Castrop-Anteil</a>'+
+      '<a class="full" href="gpx/komplett/'+encodeURIComponent(f.full)+'" download>komplette Linie</a>'+
+    '</div>';
+  grid.appendChild(el);
+});
+</script>
+</body>
+</html>
