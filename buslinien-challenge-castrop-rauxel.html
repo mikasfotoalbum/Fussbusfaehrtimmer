@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fußbus fährt immer!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B2D42;
+    --panel:#343651;
+    --rail:#464A66;
+    --chalk:#EDF2F4;
+    --dim:#8D99AE;
+    --signal:#EF233C;
+    --deep:#D90429;
+    --blind:#1C1E2E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--chalk);
+    font-family:"Barlow","Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+
+  .blind{
+    background:var(--blind);border:1px solid var(--rail);border-radius:3px;
+    padding:18px 20px 16px;box-shadow:inset 0 0 44px rgba(239,35,60,.07);
+  }
+  .blind .route-no{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+    font-size:clamp(30px,6.6vw,54px);line-height:.95;color:var(--signal);
+    letter-spacing:.01em;margin:0;
+  }
+  .blind .dest{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;
+    font-size:clamp(17px,3.6vw,23px);font-weight:500;color:#B8607A;
+    margin:6px 0 0;line-height:1.2;
+  }
+  .lede{color:var(--dim);max-width:62ch;margin:22px 0 0;font-size:15px}
+  .lede b{color:var(--chalk);font-weight:600}
+
+  .gauge{margin:26px 0 8px}
+  .gauge-top{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .rank{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:clamp(24px,5vw,34px);font-weight:600;line-height:1.1;margin:0}
+  .km{font-variant-numeric:tabular-nums;color:var(--dim);font-size:15px}
+  .km strong{color:var(--signal);font-size:19px;font-weight:600}
+  .bar{margin-top:12px;height:14px;background:var(--blind);border:1px solid var(--rail);border-radius:2px;overflow:hidden;display:flex}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--deep),var(--signal));transition:width .5s cubic-bezier(.2,.7,.3,1)}
+  .next{font-size:13.5px;color:var(--dim);margin-top:8px}
+
+  h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:26px;margin:46px 0 4px;letter-spacing:.01em}
+  .sub{color:var(--dim);font-size:14px;margin:0 0 16px}
+  .mapbox{background:var(--panel);border:1px solid var(--rail);border-radius:4px;padding:8px;overflow:hidden}
+  svg.map{display:block;width:100%;height:auto}
+  .city{fill:#2A2C41;stroke:#5A5E7C;stroke-width:1.6;stroke-dasharray:7 5}
+  .rt{fill:none;stroke:var(--dim);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;opacity:.45;transition:stroke .35s,opacity .35s,stroke-width .35s}
+  .rt.done{stroke:var(--signal);opacity:1;stroke-width:4}
+  .node{fill:var(--ink);stroke:var(--dim);stroke-width:2}
+  .node.hub{fill:var(--signal);stroke:var(--signal)}
+  .nlab{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:15px;fill:#B6C0D0}
+  .nlab.out{fill:#727B92;font-style:italic}
+
+  .grid{display:grid;gap:10px;margin-top:16px}
+  .m{
+    background:var(--panel);border:1px solid var(--rail);border-radius:4px;
+    display:grid;grid-template-columns:76px 1fr auto;gap:14px;align-items:start;
+    padding:14px 16px;cursor:pointer;transition:border-color .2s,background .2s;
+  }
+  .m:hover{border-color:#5D6284}
+  .m:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+  .m .badge{
+    background:var(--blind);border:1px solid var(--rail);border-radius:2px;
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+    font-size:23px;color:var(--signal);text-align:center;padding:7px 4px 5px;letter-spacing:.02em;
+  }
+  .m .op{display:block;font-size:10.5px;color:var(--dim);font-weight:500;letter-spacing:.06em;margin-top:2px}
+  .m h3{margin:0;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:20px;line-height:1.2}
+  .m p{margin:3px 0 0;font-size:14px;color:var(--dim);line-height:1.45}
+  .meta{margin-top:7px;font-size:13px;color:#7C86A0;font-variant-numeric:tabular-nums}
+  .meta span{color:#B6C0D0}
+  .tick{width:30px;height:30px;border:2px solid var(--rail);border-radius:3px;display:grid;place-items:center;color:transparent;font-size:18px;font-weight:700;transition:border-color .2s,background .2s,color .2s;flex:none}
+  .m.done{background:#3B3050;border-color:var(--deep)}
+  .m.done .tick{background:var(--signal);border-color:var(--signal);color:var(--chalk)}
+  .m.done h3{color:var(--signal)}
+  .m.flash{animation:pop .45s ease-out}
+  @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.015)}100%{transform:scale(1)}}
+
+  .foot{margin-top:40px;border-top:1px solid var(--rail);padding-top:20px;color:var(--dim);font-size:14px}
+  .foot h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:19px;color:var(--chalk);margin:0 0 6px;font-weight:600}
+  .foot ul{margin:0 0 18px;padding-left:20px}
+  .foot li{margin-bottom:5px}
+  button.reset{background:none;border:1px solid var(--rail);color:var(--dim);font-family:inherit;font-size:13px;padding:7px 13px;border-radius:3px;cursor:pointer}
+  button.reset:hover{border-color:var(--signal);color:var(--chalk)}
+  .status{font-size:13px;color:#7C86A0;margin-top:10px;min-height:18px}
+
+  @media (max-width:560px){
+    .m{grid-template-columns:62px 1fr auto;gap:11px;padding:12px}
+    .m .badge{font-size:19px}
+    .nlab{font-size:19px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="blind">
+    <p class="route-no">FUSSBUS FÄHRT IMMER!</p>
+    <p class="dest">Castrop-Rauxel · 16 Linien</p>
+  </header>
+
+  <p class="lede">Jede Buslinie, die Castroper Stadtgebiet berührt, einmal komplett ablaufen — 16 Stück. Gewertet wird der <b>Stadtgebiets-Anteil</b>: der Teil der Linie innerhalb der Stadtgrenze, gemessen an der Fahrbahn-Geometrie aus OpenStreetMap, ohne Bahnsteige. Wer die volle Linie bis Herne, Bochum oder Dortmund durchzieht, kriegt den Bonus.</p>
+
+  <section class="gauge">
+    <div class="gauge-top">
+      <h2 class="rank" id="rank" style="margin:0">Neuling am Münsterplatz</h2>
+      <p class="km" id="kmline"><strong>0</strong> von 123,3 km · 0 / 16 Linien</p>
+    </div>
+    <div class="bar"><i id="fill"></i></div>
+    <p class="next" id="next">Noch 12 km bis zum nächsten Rang.</p>
+    <p class="status" id="status"></p>
+  </section>
+
+  <h2>Das Revier</h2>
+  <p class="sub">Schematische Karte — Stadtteile stehen ungefähr an ihrer echten Lage zueinander, die Linien sind vereinfacht. Erledigte Linien leuchten.</p>
+  <div class="mapbox">
+    <svg class="map" viewBox="0 0 900 620" role="img" aria-label="Schematische Karte der Buslinien in Castrop-Rauxel">
+      <path class="city" d="M330,55 L470,45 L560,80 L640,130 L700,200 L740,300 L760,420 L700,520 L560,560 L450,545 L360,500 L280,470 L215,400 L180,300 L200,190 L250,105 Z"/>
+
+      <!-- Linien -->
+      <g id="routes">
+        <polyline class="rt" data-line="347" points="373,388 405,345 444,280"/>
+        <polyline class="rt" data-line="341" points="373,388 430,432 485,473 537,433"/>
+        <polyline class="rt" data-line="361" points="373,388 470,330 573,272 658,325 850,225"/>
+        <polyline class="rt" data-line="351" points="100,470 277,437 330,412 373,388"/>
+        <polyline class="rt" data-line="311" points="100,478 250,455 320,420 373,394"/>
+        <polyline class="rt" data-line="324" points="100,488 245,468 318,428 373,400"/>
+        <polyline class="rt" data-line="237" points="373,388 344,246 364,185 300,20"/>
+        <polyline class="rt" data-line="233" points="393,90 350,58 300,20"/>
+        <polyline class="rt" data-line="SB22" points="373,388 344,246 393,90 430,15"/>
+        <polyline class="rt" data-line="480" points="800,560 761,544 470,516 400,440 373,388 344,246 364,185 576,135"/>
+        <polyline class="rt" data-line="481" points="393,90 364,185 344,246 400,262 444,280"/>
+        <polyline class="rt" data-line="482" points="537,433 373,388 436,325 364,185 576,135 850,225"/>
+        <polyline class="rt" data-line="NE11" points="850,225 576,135 393,90 344,246 373,388"/>
+        <polyline class="rt" data-line="353" points="300,600 470,516 485,473 373,388"/>
+        <polyline class="rt" data-line="378" points="761,544 685,512 470,522 373,394"/>
+        <polyline class="rt" data-line="364" points="340,612 478,524 512,486 460,455 380,396"/>
+      </g>
+
+      <!-- Knoten -->
+      <g>
+        <circle class="node hub" cx="373" cy="388" r="8"/><text class="nlab" x="386" y="398">Münsterplatz</text>
+        <circle class="node hub" cx="344" cy="246" r="7"/><text class="nlab" x="356" y="242">Hauptbahnhof</text>
+        <circle class="node" cx="576" cy="135" r="6"/><text class="nlab" x="588" y="140">Ickern</text>
+        <circle class="node" cx="393" cy="90" r="6"/><text class="nlab" x="404" y="86">Henrichenburg</text>
+        <circle class="node" cx="364" cy="185" r="6"/><text class="nlab" x="240" y="180">Habinghorst</text>
+        <circle class="node" cx="444" cy="280" r="6"/><text class="nlab" x="456" y="285">Ev. Krankenhaus</text>
+        <circle class="node" cx="436" cy="325" r="5"/><text class="nlab" x="352" y="322">Erin</text>
+        <circle class="node" cx="573" cy="272" r="6"/><text class="nlab" x="585" y="277">Deininghausen</text>
+        <circle class="node" cx="658" cy="325" r="5"/><text class="nlab" x="670" y="330">Dingen</text>
+        <circle class="node" cx="537" cy="433" r="6"/><text class="nlab" x="549" y="438">Schwerin</text>
+        <circle class="node" cx="485" cy="473" r="5"/><text class="nlab" x="497" y="478">Obercastrop</text>
+        <circle class="node" cx="470" cy="516" r="6"/><text class="nlab" x="482" y="533">Merklinde</text>
+        <circle class="node" cx="685" cy="512" r="6"/><text class="nlab" x="697" y="517">Frohlinde</text>
+        <circle class="node" cx="277" cy="437" r="5"/><text class="nlab" x="150" y="428">Westring</text>
+      </g>
+      <g>
+        <text class="nlab out" x="60" y="492">Herne →</text>
+        <text class="nlab out" x="245" y="618">Bochum →</text>
+        <text class="nlab out" x="795" y="212">DO-Mengede →</text>
+        <text class="nlab out" x="742" y="583">DO-Marten →</text>
+        <text class="nlab out" x="248" y="16">Recklinghausen →</text>
+        <text class="nlab out" x="440" y="16">Datteln →</text>
+      </g>
+    </svg>
+  </div>
+
+  <h2>Missionen</h2>
+  <p class="sub">Nach Liniennummer sortiert. Tippen zum Abhaken, der Stand wird gespeichert.</p>
+  <div class="grid" id="grid"></div>
+
+  <div class="foot">
+    <h3>Bevor ihr loslauft</h3>
+    <ul>
+      <li>Die Kilometer sind gemessen, nicht geschätzt: echte Linienführung aus OpenStreetMap, geodätisch gerechnet und exakt an der Stadtgrenze abgeschnitten.</li><li>Wer jede Linie einzeln läuft, kommt auf 123,3 km. Das eindeutige Straßennetz darunter ist nur 78 km lang — der Rest sind Überschneidungen, vor allem rund um den Münsterplatz.</li><li>Nicht im Board: die Einsatzlinie 311E. Sie liegt mit 1,8 km deckungsgleich auf der 311. Wenn ihr sie als eigene Mission wollt, ist sie geschenkt.</li>
+      <li>Sortiert nach Liniennummer. Die kürzesten Castroper Anteile haben 311, 324 und 233 mit unter 2,2 km — die liegen aber am Stadtrand, die Anfahrt kostet dort mehr Zeit als der Lauf.</li>
+      <li>Achtung auf der 378 und 353: Teile führen über die B235 und die Dortmunder Straße. Da fehlt streckenweise ein durchgehender Gehweg — vorher auf der Karte eine Parallelroute festlegen.</li>
+      <li>Überschneidungen sind Absicht: 311, 324 und 351 teilen sich in Castrop fast denselben Korridor. Ihr könnt sie an einem Tag stapeln.</li>
+      <li>Linien und Verläufe ändern sich zum Fahrplanwechsel. Vor dem Start einmal gegen den aktuellen Liniennetzplan Castrop-Rauxel bei HCR und den Vestische-Fahrplan gegenchecken.</li>
+    </ul>
+    <button class="reset" id="reset">Fortschritt zurücksetzen</button>
+  </div>
+</div>
+
+<script>
+const MISSIONS = [
+  {id:"233", op:"Vestische", title:"Henrichenburg-Zipfel", km:2.1, full:10.5, route:"Henrichenburg Mitte – Pöppinghausen – Recklinghausen Hbf", note:"Kürzester Castroper Anteil im Norden. Nur zusammen mit der SB22 sinnvoll."},
+  {id:"237", op:"Vestische", title:"Nordkorridor", km:11.2, full:20.7, route:"Münsterplatz – Hauptbahnhof – Habinghorst – RE König Ludwig – Hillerheide – Recklinghausen Hbf", note:"Quer durch Rauxel und Habinghorst bis zur Stadtgrenze."},
+  {id:"311", op:"HCR", title:"Grenzgang Sodingen", km:1.8, full:9.9, route:"Herne Bf – Sodingen – Holthausen – Castrop Münsterplatz", note:"Nur 1,8 km liegen in Castrop. Der Rest ist Herner Boden."},
+  {id:"324", op:"HCR", title:"LAGO-Achse", km:2.0, full:11.1, route:"Herne Bf – Herne Mitte – LAGO – Sodingen – Holthausen – Castrop Münsterplatz", note:"Im Castroper Teil fast deckungsgleich mit der 311."},
+  {id:"341", op:"HCR", title:"Schwerin-Schleife", km:6.8, full:6.8, route:"Münsterplatz – Castrop Markt – Hochstr. – Neuroder Platz – Schwerin Seniorenheim", note:"Zweite Linie, die komplett in Castrop liegt. Ordentlich Welle im Profil."},
+  {id:"347", op:"HCR", title:"Krankenhaus-Runde", km:4.1, full:4.1, route:"Münsterplatz – Holzstr. – Europaplatz – Ev. Krankenhaus", note:"Komplett im Stadtgebiet und die kürzeste Linie überhaupt. Der Einstieg."},
+  {id:"351", op:"HCR", title:"Gewerbegebiet Westring", km:3.2, full:10.7, route:"Herne Bf – Börnig – Holthausen – Westring/Herner Str. – Gewerbegebiet Westring – Münsterplatz", note:"Der Westring-Bogen ist das Stück, das 311 und 324 nicht abdecken."},
+  {id:"353", op:"Bogestra", title:"Südgrenze", km:3.8, full:21.9, route:"Bochum Blankensteiner Str. – Gerthe – Merklinde – Obercastrop – Castrop Münsterplatz", note:"Die längste Linie im Netz. Voll gelaufen sind das über 23 km."},
+  {id:"361", op:"HCR", title:"Deininghausen–Dingen", km:8.1, full:11.8, route:"Münsterplatz – Deininghausen – Castrop-Dingen – DO-Nette/Oestrich – Mengede Markt", note:"Zwei Drittel der Linie liegen in Castrop. Viel Grün, wenig Ampeln."},
+  {id:"364", op:"Bogestra", title:"Obercastrop-Schleife", km:5.5, full:19.5, route:"Bochum Sportplatz Papenholz – Werne – Harpen – Gerthe – Strunk – Merklinde – Marienstr. – Stadtgarten – Castrop Markt – Münsterplatz", note:"Fährt durch die Siedlung an der Marienstraße, die sonst keine Linie bedient. Die (H) Strunk ist wegen Bauarbeiten außer Betrieb."},
+  {id:"378", op:"Bogestra", title:"Uni-Linie", km:3.7, full:18.1, route:"Bochum Ruhr-Universität – Langendreer – Bövinghausen – Frohlinde – Merklinde – Münsterplatz", note:"Der hügeligste Abschnitt. Frohlinde liegt spürbar höher als die Innenstadt."},
+  {id:"480", op:"DSW21", title:"Marten–Ickern", km:14.7, full:19.5, route:"DO-Marten – Bövinghausen – Merklinde – Münsterplatz – Hauptbahnhof – Habinghorst – Ickern", note:"Diagonale durch die ganze Stadt. Drei Viertel der Linie sind Castroper Gebiet."},
+  {id:"481", op:"DSW21", title:"Königsetappe", km:16.7, full:16.7, route:"Henrichenburg – Becklem – Lunastraße – Hauptbahnhof – Ev. Krankenhaus – Castrop", note:"Der längste Castroper Anteil im ganzen Netz. Von 16,9 km liegen 16,9 in der Stadt — sie verlässt Castrop praktisch nie."},
+  {id:"482", op:"DSW21", title:"Ickern-Schleife", km:15.2, full:18.1, route:"Schwerin – Münsterplatz – Erin – Habinghorst – Ickern – DO-Mengede Markt", note:"Vier Linienvarianten, die sich in Ickern unterscheiden. Rechnet mit einem halben Tag."},
+  {id:"NE11", op:"DSW21", title:"NachtExpress-Ring", km:15.5, full:26.1, route:"DO Reinoldikirche – Mengede – Ickern – Henrichenburg – Hauptbahnhof (Ringlinie)", note:"Die längste Gesamtstrecke im Netz und ein überraschend großer Castroper Anteil."},
+  {id:"SB22", op:"Vestische", title:"Schnellbus nach Datteln", km:8.9, full:13.5, route:"Münsterplatz – Hauptbahnhof – Henrichenburg – Datteln Bus Bf", note:"Nord-Süd-Durchquerung am Schiffshebewerk vorbei."}
+];
+
+const RANKS = [
+  {at:0,    name:"Neuling am Münsterplatz"},
+  {at:12,   name:"Stammgast Linie 347"},
+  {at:35,   name:"Kenner des Nordkorridors"},
+  {at:65,   name:"Halbes Netz im Bein"},
+  {at:100,  name:"Vestische Legende"},
+  {at:123.3,name:"Alle Linien. Fertig."}
+];
+
+const r1 = n => Math.round(n*10)/10;
+const de = n => r1(n).toString().replace(".",",");
+const TOTAL_KM = r1(MISSIONS.reduce((s,m)=>s+m.km,0));
+const KEY = "linienjagd-cas-v1";
+let done = new Set();
+
+const grid = document.getElementById("grid");
+const statusEl = document.getElementById("status");
+
+function render(){
+  grid.innerHTML = "";
+  MISSIONS.forEach(m=>{
+    const el = document.createElement("div");
+    el.className = "m" + (done.has(m.id) ? " done" : "");
+    el.tabIndex = 0;
+    el.setAttribute("role","button");
+    el.setAttribute("aria-pressed", done.has(m.id));
+    el.innerHTML =
+      '<div class="badge">'+m.id+'<span class="op">'+m.op+'</span></div>'+
+      '<div><h3>'+m.title+'</h3>'+
+      '<p>'+m.route+'</p>'+
+      '<p class="meta"><span>'+de(m.km)+' km</span> im Stadtgebiet'+
+      (m.full>m.km ? ' · volle Linie <span>'+de(m.full)+' km</span>' : '')+
+      ' · '+m.note+'</p></div>'+
+      '<div class="tick">✓</div>';
+    const toggle = ()=>{
+      if(done.has(m.id)) done.delete(m.id); else { done.add(m.id); el.classList.add("flash"); }
+      save(); paint();
+    };
+    el.addEventListener("click", toggle);
+    el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); }});
+    grid.appendChild(el);
+  });
+  paint();
+}
+
+function paint(){
+  const cards = grid.querySelectorAll(".m");
+  MISSIONS.forEach((m,i)=>{
+    cards[i].classList.toggle("done", done.has(m.id));
+    cards[i].setAttribute("aria-pressed", done.has(m.id));
+  });
+  document.querySelectorAll("#routes .rt").forEach(p=>{
+    p.classList.toggle("done", done.has(p.dataset.line));
+  });
+  const km = r1(MISSIONS.filter(m=>done.has(m.id)).reduce((s,m)=>s+m.km,0));
+  const pct = Math.round(km/TOTAL_KM*100);
+  document.getElementById("fill").style.width = pct+"%";
+  document.getElementById("kmline").innerHTML =
+    "<strong>"+de(km)+"</strong> von "+de(TOTAL_KM)+" km · "+done.size+" / "+MISSIONS.length+" Linien";
+  let rank = RANKS[0];
+  for(const r of RANKS){ if(km>=r.at) rank = r; }
+  document.getElementById("rank").textContent = rank.name;
+  const nxt = RANKS.find(r=>r.at>km);
+  document.getElementById("next").textContent = nxt
+    ? "Noch "+de(nxt.at-km)+" km bis „"+nxt.name+"“."
+    : "Ihr habt jede Linie in Castrop-Rauxel abgelaufen. Sucht euch eine neue Stadt.";
+}
+
+async function save(){
+  try{
+    await window.storage.set(KEY, JSON.stringify([...done]));
+    statusEl.textContent = "Gespeichert.";
+    setTimeout(()=>{ statusEl.textContent=""; }, 1600);
+  }catch(e){
+    statusEl.textContent = "Konnte nicht gespeichert werden — der Stand gilt nur für diese Sitzung.";
+  }
+}
+
+async function load(){
+  try{
+    const r = await window.storage.get(KEY);
+    if(r && r.value) done = new Set(JSON.parse(r.value));
+  }catch(e){ /* noch nichts gespeichert */ }
+  render();
+}
+
+document.getElementById("reset").addEventListener("click", async ()=>{
+  done = new Set();
+  try{ await window.storage.delete(KEY); }catch(e){}
+  paint();
+  statusEl.textContent = "Board zurückgesetzt.";
+  setTimeout(()=>{ statusEl.textContent=""; }, 1600);
+});
+
+load();
+</script>
+</body>
+</html>
