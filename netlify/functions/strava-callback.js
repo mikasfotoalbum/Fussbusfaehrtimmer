@@ -1,11 +1,14 @@
 const { leaderboardStore } = require("./lib/leaderboard-store");
 
-// Sums the distance (in meters) of Walk/Hike activities on the
+// Sums the distance (in meters) of on-foot activities on the
 // athlete's Strava account since the challenge start date that are
 // tagged for the challenge (tag appears in the activity title or
 // description) — so only intentionally-logged challenge walks count,
-// not every stroll the athlete happens to record.
+// not every stroll the athlete happens to record. Accepts Walk/Hike as
+// well as Run/TrailRun, since Strava's auto-detected activity type for
+// a walk is not always "Walk".
 const CHALLENGE_TAG = (process.env.CHALLENGE_TAG || "#fussbuscas").toLowerCase();
+const COUNTED_TYPES = new Set(["Walk", "Hike", "Run", "TrailRun"]);
 
 async function sumWalkingMeters(accessToken) {
   const afterDate = process.env.CHALLENGE_START_DATE || "2026-01-01";
@@ -23,7 +26,7 @@ async function sumWalkingMeters(accessToken) {
     const activities = await res.json();
     if (!Array.isArray(activities) || activities.length === 0) break;
     for (const a of activities) {
-      if (a.type !== "Walk" && a.type !== "Hike") continue;
+      if (!COUNTED_TYPES.has(a.type)) continue;
       if (isTagged(a)) {
         total += a.distance || 0;
         continue;
