@@ -1,7 +1,7 @@
-const { getStore } = require("@netlify/blobs");
+const { leaderboardStore } = require("./lib/leaderboard-store");
 
 exports.handler = async () => {
-  const store = getStore("leaderboard");
+  const store = leaderboardStore();
   const { blobs } = await store.list();
 
   const entries = [];

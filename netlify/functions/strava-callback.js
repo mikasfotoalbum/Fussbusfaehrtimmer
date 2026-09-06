@@ -1,4 +1,4 @@
-const { getStore } = require("@netlify/blobs");
+const { leaderboardStore } = require("./lib/leaderboard-store");
 
 // Sums the distance (in meters) of all Walk/Hike activities on the
 // athlete's Strava account since the challenge start date.
@@ -69,7 +69,7 @@ exports.handler = async (event) => {
 
   const totalMeters = await sumWalkingMeters(access_token);
 
-  const store = getStore("leaderboard");
+  const store = leaderboardStore();
   const entry = {
     athleteId: athlete.id,
     name: `${athlete.firstname || ""} ${athlete.lastname || ""}`.trim() || "Unbekannt",
