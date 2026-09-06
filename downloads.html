@@ -26,7 +26,23 @@
     font-family:"Barlow","Helvetica Neue",Arial,sans-serif;
     font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+  nav.nav{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    padding:16px 0;border-bottom:1px solid var(--rail);margin-bottom:22px;
+  }
+  nav.nav .brand{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+    color:var(--chalk);text-decoration:none;font-size:16px;letter-spacing:.02em;
+  }
+  nav.nav .links{display:flex;gap:20px;flex-wrap:wrap}
+  nav.nav .links a{
+    color:var(--dim);text-decoration:none;font-size:14px;font-weight:500;
+    padding:4px 1px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;
+  }
+  nav.nav .links a:hover{color:var(--chalk)}
+  nav.nav .links a.active{color:var(--signal);border-color:var(--signal)}
 
   .blind{
     background:var(--blind);border:1px solid var(--rail);border-radius:3px;
@@ -92,13 +108,21 @@
 <body>
 <div class="wrap">
 
+  <nav class="nav">
+    <a class="brand" href="index.html">Fußbus fährt immer!</a>
+    <div class="links">
+      <a href="downloads.html" class="active">Downloads</a>
+      <a href="index.html">Mein Fortschritt</a>
+      <a href="tracker.html">Eigener Tracker</a>
+    </div>
+  </nav>
+
   <header class="blind">
     <p class="route-no">GPX-DOWNLOADS</p>
     <p class="dest">Fußbus fährt immer! · Castrop-Rauxel · 16 Linien</p>
   </header>
 
   <p class="lede">Track-Dateien zu allen 16 Buslinien aus der Challenge — als GPX zum Laden in Komoot, OsmAnd, Garmin & Co. Pro Linie gibt es zwei Varianten: <b>Castrop-Anteil</b> (nur das Stück, das gewertet wird) und <b>komplette Linie</b> (die ganze Strecke bis zur Endhaltestelle, auch außerhalb der Stadt).</p>
-  <a class="back" href="index.html">← zurück zur Challenge</a>
 
   <h2>Alle Linien</h2>
   <p class="sub">Sortiert nach Liniennummer. Tracks stammen aus OpenStreetMap-Daten.</p>

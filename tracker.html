@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fußbus fährt immer!</title>
+<title>Eigener Tracker · Fußbus fährt immer!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
@@ -87,8 +87,10 @@
   .m{
     background:var(--panel);border:1px solid var(--rail);border-radius:4px;
     display:grid;grid-template-columns:76px 1fr auto;gap:14px;align-items:start;
-    padding:14px 16px;
+    padding:14px 16px;cursor:pointer;transition:border-color .2s,background .2s;
   }
+  .m:hover{border-color:#5D6284}
+  .m:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
   .m .badge{
     background:var(--blind);border:1px solid var(--rail);border-radius:2px;
     font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
@@ -103,17 +105,16 @@
   .m.done{background:#3B3050;border-color:var(--deep)}
   .m.done .tick{background:var(--signal);border-color:var(--signal);color:var(--chalk)}
   .m.done h3{color:var(--signal)}
+  .m.flash{animation:pop .45s ease-out}
+  @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.015)}100%{transform:scale(1)}}
 
   .foot{margin-top:40px;border-top:1px solid var(--rail);padding-top:20px;color:var(--dim);font-size:14px}
   .foot h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:19px;color:var(--chalk);margin:0 0 6px;font-weight:600}
   .foot ul{margin:0 0 18px;padding-left:20px}
   .foot li{margin-bottom:5px}
-  .cta{
-    display:inline-block;margin-top:4px;background:var(--signal);color:var(--chalk);
-    text-decoration:none;font-weight:600;font-size:14.5px;padding:11px 20px;border-radius:3px;
-    transition:background .2s;
-  }
-  .cta:hover{background:var(--deep)}
+  button.reset{background:none;border:1px solid var(--rail);color:var(--dim);font-family:inherit;font-size:13px;padding:7px 13px;border-radius:3px;cursor:pointer}
+  button.reset:hover{border-color:var(--signal);color:var(--chalk)}
+  .status{font-size:13px;color:#7C86A0;margin-top:10px;min-height:18px}
 
   @media (max-width:560px){
     .m{grid-template-columns:62px 1fr auto;gap:11px;padding:12px}
@@ -130,8 +131,8 @@
     <a class="brand" href="index.html">Fußbus fährt immer!</a>
     <div class="links">
       <a href="downloads.html">Downloads</a>
-      <a href="index.html" class="active">Mein Fortschritt</a>
-      <a href="tracker.html">Eigener Tracker</a>
+      <a href="index.html">Mein Fortschritt</a>
+      <a href="tracker.html" class="active">Eigener Tracker</a>
     </div>
   </nav>
 
@@ -140,7 +141,7 @@
     <p class="dest">Castrop-Rauxel · 16 Linien</p>
   </header>
 
-  <p class="lede">Jede Buslinie, die Castroper Stadtgebiet berührt, einmal komplett ablaufen — 16 Stück. Gewertet wird der <b>Stadtgebiets-Anteil</b>: der Teil der Linie innerhalb der Stadtgrenze, gemessen an der Fahrbahn-Geometrie aus OpenStreetMap, ohne Bahnsteige. Wer die volle Linie bis Herne, Bochum oder Dortmund durchzieht, kriegt den Bonus. Das ist mein eigener Stand — <a href="tracker.html">trag hier deinen eigenen Fortschritt ein →</a></p>
+  <p class="lede">Jede Buslinie, die Castroper Stadtgebiet berührt, einmal komplett ablaufen — 16 Stück. Gewertet wird der <b>Stadtgebiets-Anteil</b>: der Teil der Linie innerhalb der Stadtgrenze, gemessen an der Fahrbahn-Geometrie aus OpenStreetMap, ohne Bahnsteige. Wer die volle Linie bis Herne, Bochum oder Dortmund durchzieht, kriegt den Bonus. Dein Fortschritt wird nur lokal in diesem Browser gespeichert, nicht online.</p>
 
   <section class="gauge">
     <div class="gauge-top">
@@ -149,6 +150,7 @@
     </div>
     <div class="bar"><i id="fill"></i></div>
     <p class="next" id="next">Noch 12 km bis zum nächsten Rang.</p>
+    <p class="status" id="status"></p>
   </section>
 
   <h2>Das Revier</h2>
@@ -206,20 +208,19 @@
   </div>
 
   <h2>Missionen</h2>
-  <p class="sub">Nach Liniennummer sortiert. Das ist mein persönlicher Stand — nicht anklickbar.</p>
+  <p class="sub">Nach Liniennummer sortiert. Tippen zum Abhaken, der Stand wird gespeichert. <a href="downloads.html" style="color:var(--signal)">GPX-Tracks aller Linien zum Download →</a></p>
   <div class="grid" id="grid"></div>
 
   <div class="foot">
-    <h3>Willst du selbst mitmachen?</h3>
-    <p style="margin:0 0 14px">Trag deinen eigenen Fortschritt auf deinem Gerät ein — läuft komplett lokal in deinem Browser, ohne Account.</p>
-    <a class="cta" href="tracker.html">Eigenen Fortschritt tracken →</a>
-    <ul style="margin-top:24px">
+    <h3>Bevor ihr loslauft</h3>
+    <ul>
       <li>Die Kilometer sind gemessen, nicht geschätzt: echte Linienführung aus OpenStreetMap, geodätisch gerechnet und exakt an der Stadtgrenze abgeschnitten.</li><li>Wer jede Linie einzeln läuft, kommt auf 123,3 km. Das eindeutige Straßennetz darunter ist nur 78 km lang — der Rest sind Überschneidungen, vor allem rund um den Münsterplatz.</li><li>Nicht im Board: die Einsatzlinie 311E. Sie liegt mit 1,8 km deckungsgleich auf der 311. Wenn ihr sie als eigene Mission wollt, ist sie geschenkt.</li>
       <li>Sortiert nach Liniennummer. Die kürzesten Castroper Anteile haben 311, 324 und 233 mit unter 2,2 km — die liegen aber am Stadtrand, die Anfahrt kostet dort mehr Zeit als der Lauf.</li>
       <li>Achtung auf der 378 und 353: Teile führen über die B235 und die Dortmunder Straße. Da fehlt streckenweise ein durchgehender Gehweg — vorher auf der Karte eine Parallelroute festlegen.</li>
       <li>Überschneidungen sind Absicht: 311, 324 und 351 teilen sich in Castrop fast denselben Korridor. Ihr könnt sie an einem Tag stapeln.</li>
       <li>Linien und Verläufe ändern sich zum Fahrplanwechsel. Vor dem Start einmal gegen den aktuellen Liniennetzplan Castrop-Rauxel bei HCR und den Vestische-Fahrplan gegenchecken.</li>
     </ul>
+    <button class="reset" id="reset">Fortschritt zurücksetzen</button>
   </div>
 </div>
 
@@ -252,21 +253,23 @@ const RANKS = [
   {at:123.3,name:"Alle Linien. Fertig."}
 ];
 
-// Mein eigener Stand — Liniennummern hier eintragen, sobald ich sie gelaufen bin, z. B. ["347","341"]
-const OWNER_DONE = [];
-
 const r1 = n => Math.round(n*10)/10;
 const de = n => r1(n).toString().replace(".",",");
 const TOTAL_KM = r1(MISSIONS.reduce((s,m)=>s+m.km,0));
-const done = new Set(OWNER_DONE);
+const KEY = "linienjagd-cas-v1";
+let done = new Set();
 
 const grid = document.getElementById("grid");
+const statusEl = document.getElementById("status");
 
 function render(){
   grid.innerHTML = "";
   MISSIONS.forEach(m=>{
     const el = document.createElement("div");
     el.className = "m" + (done.has(m.id) ? " done" : "");
+    el.tabIndex = 0;
+    el.setAttribute("role","button");
+    el.setAttribute("aria-pressed", done.has(m.id));
     el.innerHTML =
       '<div class="badge">'+m.id+'<span class="op">'+m.op+'</span></div>'+
       '<div><h3>'+m.title+'</h3>'+
@@ -275,12 +278,23 @@ function render(){
       (m.full>m.km ? ' · volle Linie <span>'+de(m.full)+' km</span>' : '')+
       ' · '+m.note+'</p></div>'+
       '<div class="tick">✓</div>';
+    const toggle = ()=>{
+      if(done.has(m.id)) done.delete(m.id); else { done.add(m.id); el.classList.add("flash"); }
+      save(); paint();
+    };
+    el.addEventListener("click", toggle);
+    el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); }});
     grid.appendChild(el);
   });
   paint();
 }
 
 function paint(){
+  const cards = grid.querySelectorAll(".m");
+  MISSIONS.forEach((m,i)=>{
+    cards[i].classList.toggle("done", done.has(m.id));
+    cards[i].setAttribute("aria-pressed", done.has(m.id));
+  });
   document.querySelectorAll("#routes .rt").forEach(p=>{
     p.classList.toggle("done", done.has(p.dataset.line));
   });
@@ -295,10 +309,36 @@ function paint(){
   const nxt = RANKS.find(r=>r.at>km);
   document.getElementById("next").textContent = nxt
     ? "Noch "+de(nxt.at-km)+" km bis „"+nxt.name+"“."
-    : "Alle Linien in Castrop-Rauxel abgelaufen.";
+    : "Ihr habt jede Linie in Castrop-Rauxel abgelaufen. Sucht euch eine neue Stadt.";
 }
 
-render();
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify([...done]));
+    statusEl.textContent = "Gespeichert.";
+    setTimeout(()=>{ statusEl.textContent=""; }, 1600);
+  }catch(e){
+    statusEl.textContent = "Konnte nicht gespeichert werden — der Stand gilt nur für diese Sitzung.";
+  }
+}
+
+function load(){
+  try{
+    const v = localStorage.getItem(KEY);
+    if(v) done = new Set(JSON.parse(v));
+  }catch(e){ /* noch nichts gespeichert */ }
+  render();
+}
+
+document.getElementById("reset").addEventListener("click", ()=>{
+  done = new Set();
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  paint();
+  statusEl.textContent = "Board zurückgesetzt.";
+  setTimeout(()=>{ statusEl.textContent=""; }, 1600);
+});
+
+load();
 </script>
 </body>
 </html>
