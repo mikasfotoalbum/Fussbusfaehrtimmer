@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Linienjagd Castrop-Rauxel" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Linie 311 – Stadtgebiet Castrop-Rauxel</name><desc>Bus 311: Castrop-Rauxel Münsterplatz =&gt; Teutoburgia =&gt; Herne Bahnhof | 1.77 km in Castrop-Rauxel | 3 Haltestellen</desc></metadata>
+  <wpt lat="51.5493442" lon="7.3089234"><name>01 Castrop Münsterplatz</name><sym>Flag</sym></wpt>
+  <wpt lat="51.5501421" lon="7.3018211"><name>02 Dammstraße</name><sym>Flag</sym></wpt>
+  <wpt lat="51.5502192" lon="7.2967307"><name>03 Daimlerstraße</name><sym>Flag</sym></wpt>
+  <trk><name>Linie 311 – Stadtgebiet Castrop-Rauxel</name>
+    <trkseg>
+      <trkpt lat="51.5491719" lon="7.3085843"/>
+      <trkpt lat="51.5492175" lon="7.3086793"/>
+      <trkpt lat="51.5493265" lon="7.3088877"/>
+      <trkpt lat="51.5493442" lon="7.3089234"/>
+      <trkpt lat="51.5493716" lon="7.3089642"/>
+      <trkpt lat="51.5494510" lon="7.3090787"/>
+      <trkpt lat="51.5495623" lon="7.3092147"/>
+      <trkpt lat="51.5497556" lon="7.3093970"/>
+      <trkpt lat="51.5497782" lon="7.3094102"/>
+      <trkpt lat="51.5498277" lon="7.3094217"/>
+      <trkpt lat="51.5498778" lon="7.3094213"/>
+      <trkpt lat="51.5499216" lon="7.3092632"/>
+      <trkpt lat="51.5500183" lon="7.3088689"/>
+      <trkpt lat="51.5500861" lon="7.3085592"/>
+      <trkpt lat="51.5501360" lon="7.3083809"/>
+      <trkpt lat="51.5502664" lon="7.3076791"/>
+      <trkpt lat="51.5502938" lon="7.3074757"/>
+      <trkpt lat="51.5503145" lon="7.3072911"/>
+      <trkpt lat="51.5503156" lon="7.3071179"/>
+      <trkpt lat="51.5503013" lon="7.3069551"/>
+      <trkpt lat="51.5502437" lon="7.3066489"/>
+      <trkpt lat="51.5501993" lon="7.3062938"/>
+      <trkpt lat="51.5501419" lon="7.3055598"/>
+      <trkpt lat="51.5501234" lon="7.3052619"/>
+      <trkpt lat="51.5501131" lon="7.3049542"/>
+      <trkpt lat="51.5501087" lon="7.3046653"/>
+      <trkpt lat="51.5501104" lon="7.3040843"/>
+      <trkpt lat="51.5501269" lon="7.3035107"/>
+      <trkpt lat="51.5501339" lon="7.3033578"/>
+      <trkpt lat="51.5501449" lon="7.3031478"/>
+      <trkpt lat="51.5501535" lon="7.3029778"/>
+      <trkpt lat="51.5501629" lon="7.3027468"/>
+      <trkpt lat="51.5501667" lon="7.3026596"/>
+      <trkpt lat="51.5501668" lon="7.3024374"/>
+      <trkpt lat="51.5501622" lon="7.3023610"/>
+      <trkpt lat="51.5501516" lon="7.3021774"/>
+      <trkpt lat="51.5501421" lon="7.3018211"/>
+      <trkpt lat="51.5501312" lon="7.3016156"/>
+      <trkpt lat="51.5501274" lon="7.3014372"/>
+      <trkpt lat="51.5501261" lon="7.3013229"/>
+      <trkpt lat="51.5501387" lon="7.3010359"/>
+      <trkpt lat="51.5501587" lon="7.3007312"/>
+      <trkpt lat="51.5501738" lon="7.3006099"/>
+      <trkpt lat="51.5501909" lon="7.3004728"/>
+      <trkpt lat="51.5501994" lon="7.3004051"/>
+      <trkpt lat="51.5502312" lon="7.3001659"/>
+      <trkpt lat="51.5502378" lon="7.3001065"/>
+      <trkpt lat="51.5503061" lon="7.2994975"/>
+      <trkpt lat="51.5503110" lon="7.2994534"/>
+      <trkpt lat="51.5503197" lon="7.2992928"/>
+      <trkpt lat="51.5503234" lon="7.2992235"/>
+      <trkpt lat="51.5503279" lon="7.2991390"/>
+      <trkpt lat="51.5503301" lon="7.2990069"/>
+      <trkpt lat="51.5503340" lon="7.2987665"/>
+      <trkpt lat="51.5503172" lon="7.2984085"/>
+      <trkpt lat="51.5503056" lon="7.2982091"/>
+      <trkpt lat="51.5502727" lon="7.2977507"/>
+      <trkpt lat="51.5502385" lon="7.2971907"/>
+      <trkpt lat="51.5502208" lon="7.2967698"/>
+      <trkpt lat="51.5502192" lon="7.2967307"/>
+      <trkpt lat="51.5502165" lon="7.2966656"/>
+      <trkpt lat="51.5502105" lon="7.2965231"/>
+      <trkpt lat="51.5502094" lon="7.2964682"/>
+      <trkpt lat="51.5502015" lon="7.2960681"/>
+      <trkpt lat="51.5501976" lon="7.2958682"/>
+      <trkpt lat="51.5501905" lon="7.2953234"/>
+      <trkpt lat="51.5501679" lon="7.2947010"/>
+      <trkpt lat="51.5501634" lon="7.2945446"/>
+      <trkpt lat="51.5501587" lon="7.2944148"/>
+      <trkpt lat="51.5501832" lon="7.2944084"/>
+      <trkpt lat="51.5502065" lon="7.2943947"/>
+      <trkpt lat="51.5502319" lon="7.2943693"/>
+      <trkpt lat="51.5502531" lon="7.2943354"/>
+      <trkpt lat="51.5502648" lon="7.2943076"/>
+      <trkpt lat="51.5502736" lon="7.2942772"/>
+      <trkpt lat="51.5502799" lon="7.2942402"/>
+      <trkpt lat="51.5502820" lon="7.2942021"/>
+      <trkpt lat="51.5502796" lon="7.2941622"/>
+      <trkpt lat="51.5502725" lon="7.2941237"/>
+      <trkpt lat="51.5502624" lon="7.2940913"/>
+      <trkpt lat="51.5502490" lon="7.2940622"/>
+      <trkpt lat="51.5502263" lon="7.2940294"/>
+      <trkpt lat="51.5501996" lon="7.2940059"/>
+      <trkpt lat="51.5501797" lon="7.2939957"/>
+      <trkpt lat="51.5501591" lon="7.2939907"/>
+      <trkpt lat="51.5501648" lon="7.2938695"/>
+      <trkpt lat="51.5501849" lon="7.2934858"/>
+      <trkpt lat="51.5501997" lon="7.2930517"/>
+      <trkpt lat="51.5502074" lon="7.2926516"/>
+      <trkpt lat="51.5502081" lon="7.2925673"/>
+      <trkpt lat="51.5502090" lon="7.2923825"/>
+      <trkpt lat="51.5502065" lon="7.2921376"/>
+      <trkpt lat="51.5502089" lon="7.2919540"/>
+      <trkpt lat="51.5502077" lon="7.2919169"/>
+      <trkpt lat="51.5502029" lon="7.2917713"/>
+      <trkpt lat="51.5501835" lon="7.2914113"/>
+      <trkpt lat="51.5501669" lon="7.2911607"/>
+      <trkpt lat="51.5501399" lon="7.2908643"/>
+      <trkpt lat="51.5501088" lon="7.2905636"/>
+      <trkpt lat="51.5500740" lon="7.2902805"/>
+      <trkpt lat="51.5495493" lon="7.2861191"/>
+      <trkpt lat="51.5495157" lon="7.2858538"/>
+    </trkseg>
+  </trk>
+</gpx>

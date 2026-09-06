@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Linienjagd Castrop-Rauxel" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Linie 233 – Stadtgebiet Castrop-Rauxel</name><desc>Bus 233: Castrop-Rauxel, Henrichenburg Mitte =&gt; Recklinghausen Hauptbahnhof | 2.11 km in Castrop-Rauxel | 4 Haltestellen</desc></metadata>
+  <wpt lat="51.5998069" lon="7.3117148"><name>01 Henrichenburg Mitte</name><sym>Flag</sym></wpt>
+  <wpt lat="51.5993845" lon="7.3059235"><name>02 Schöttelkamp</name><sym>Flag</sym></wpt>
+  <wpt lat="51.6006811" lon="7.3001925"><name>03 Wartburg</name><sym>Flag</sym></wpt>
+  <wpt lat="51.6017917" lon="7.2938026"><name>04 Emschertalweg</name><sym>Flag</sym></wpt>
+  <trk><name>Linie 233 – Stadtgebiet Castrop-Rauxel</name>
+    <trkseg>
+      <trkpt lat="51.5998069" lon="7.3117148"/>
+      <trkpt lat="51.5999239" lon="7.3117635"/>
+      <trkpt lat="51.6001193" lon="7.3118449"/>
+      <trkpt lat="51.6003510" lon="7.3119414"/>
+      <trkpt lat="51.6003222" lon="7.3121119"/>
+      <trkpt lat="51.6001474" lon="7.3131469"/>
+      <trkpt lat="51.6001152" lon="7.3133029"/>
+      <trkpt lat="51.6000110" lon="7.3132407"/>
+      <trkpt lat="51.5998988" lon="7.3131726"/>
+      <trkpt lat="51.5997267" lon="7.3130471"/>
+      <trkpt lat="51.5996418" lon="7.3129721"/>
+      <trkpt lat="51.5995850" lon="7.3129219"/>
+      <trkpt lat="51.5993498" lon="7.3127142"/>
+      <trkpt lat="51.5993000" lon="7.3125802"/>
+      <trkpt lat="51.5992400" lon="7.3124877"/>
+      <trkpt lat="51.5991821" lon="7.3123831"/>
+      <trkpt lat="51.5991305" lon="7.3122583"/>
+      <trkpt lat="51.5991196" lon="7.3122258"/>
+      <trkpt lat="51.5990778" lon="7.3121609"/>
+      <trkpt lat="51.5990638" lon="7.3120236"/>
+      <trkpt lat="51.5990488" lon="7.3118801"/>
+      <trkpt lat="51.5990380" lon="7.3117159"/>
+      <trkpt lat="51.5990188" lon="7.3115719"/>
+      <trkpt lat="51.5990196" lon="7.3114019"/>
+      <trkpt lat="51.5990306" lon="7.3109514"/>
+      <trkpt lat="51.5990332" lon="7.3108426"/>
+      <trkpt lat="51.5990355" lon="7.3107481"/>
+      <trkpt lat="51.5990417" lon="7.3104955"/>
+      <trkpt lat="51.5990435" lon="7.3104183"/>
+      <trkpt lat="51.5990480" lon="7.3102313"/>
+      <trkpt lat="51.5990542" lon="7.3099785"/>
+      <trkpt lat="51.5991066" lon="7.3093875"/>
+      <trkpt lat="51.5991791" lon="7.3087863"/>
+      <trkpt lat="51.5992513" lon="7.3082353"/>
+      <trkpt lat="51.5992860" lon="7.3080386"/>
+      <trkpt lat="51.5993222" lon="7.3078523"/>
+      <trkpt lat="51.5993902" lon="7.3074386"/>
+      <trkpt lat="51.5994011" lon="7.3071616"/>
+      <trkpt lat="51.5993963" lon="7.3067426"/>
+      <trkpt lat="51.5993919" lon="7.3063724"/>
+      <trkpt lat="51.5993895" lon="7.3061645"/>
+      <trkpt lat="51.5993845" lon="7.3059235"/>
+      <trkpt lat="51.5993824" lon="7.3058328"/>
+      <trkpt lat="51.5993808" lon="7.3057602"/>
+      <trkpt lat="51.5993766" lon="7.3056244"/>
+      <trkpt lat="51.5993591" lon="7.3052966"/>
+      <trkpt lat="51.5993509" lon="7.3051320"/>
+      <trkpt lat="51.5993188" lon="7.3048909"/>
+      <trkpt lat="51.5992237" lon="7.3045514"/>
+      <trkpt lat="51.5991443" lon="7.3043322"/>
+      <trkpt lat="51.5990013" lon="7.3039449"/>
+      <trkpt lat="51.5988152" lon="7.3034325"/>
+      <trkpt lat="51.5987651" lon="7.3032375"/>
+      <trkpt lat="51.5987177" lon="7.3026643"/>
+      <trkpt lat="51.5987048" lon="7.3025438"/>
+      <trkpt lat="51.5991441" lon="7.3024659"/>
+      <trkpt lat="51.5992226" lon="7.3024290"/>
+      <trkpt lat="51.5993130" lon="7.3023506"/>
+      <trkpt lat="51.5994292" lon="7.3022101"/>
+      <trkpt lat="51.5998511" lon="7.3016249"/>
+      <trkpt lat="51.5999506" lon="7.3014754"/>
+      <trkpt lat="51.6000083" lon="7.3013376"/>
+      <trkpt lat="51.6000460" lon="7.3012069"/>
+      <trkpt lat="51.6000631" lon="7.3011478"/>
+      <trkpt lat="51.6001478" lon="7.3009431"/>
+      <trkpt lat="51.6002566" lon="7.3007645"/>
+      <trkpt lat="51.6003696" lon="7.3006187"/>
+      <trkpt lat="51.6004463" lon="7.3005149"/>
+      <trkpt lat="51.6005273" lon="7.3004011"/>
+      <trkpt lat="51.6005347" lon="7.3003909"/>
+      <trkpt lat="51.6005843" lon="7.3003218"/>
+      <trkpt lat="51.6006811" lon="7.3001925"/>
+      <trkpt lat="51.6009911" lon="7.2997588"/>
+      <trkpt lat="51.6012450" lon="7.2994030"/>
+      <trkpt lat="51.6014607" lon="7.2991123"/>
+      <trkpt lat="51.6016828" lon="7.2988159"/>
+      <trkpt lat="51.6020436" lon="7.2984879"/>
+      <trkpt lat="51.6025505" lon="7.2981470"/>
+      <trkpt lat="51.6029380" lon="7.2978840"/>
+      <trkpt lat="51.6031091" lon="7.2977742"/>
+      <trkpt lat="51.6032196" lon="7.2977126"/>
+      <trkpt lat="51.6030368" lon="7.2970540"/>
+      <trkpt lat="51.6028688" lon="7.2965702"/>
+      <trkpt lat="51.6026394" lon="7.2959764"/>
+      <trkpt lat="51.6018097" lon="7.2938507"/>
+      <trkpt lat="51.6017917" lon="7.2938026"/>
+      <trkpt lat="51.6016632" lon="7.2934752"/>
+      <trkpt lat="51.6014844" lon="7.2930094"/>
+      <trkpt lat="51.6013431" lon="7.2926414"/>
+      <trkpt lat="51.6012459" lon="7.2923915"/>
+      <trkpt lat="51.6011534" lon="7.2921253"/>
+      <trkpt lat="51.6011064" lon="7.2919686"/>
+      <trkpt lat="51.6010441" lon="7.2917610"/>
+      <trkpt lat="51.6009911" lon="7.2915602"/>
+      <trkpt lat="51.6009501" lon="7.2913691"/>
+    </trkseg>
+  </trk>
+</gpx>

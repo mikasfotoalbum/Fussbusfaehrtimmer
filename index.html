@@ -286,9 +286,9 @@ function paint(){
     : "Ihr habt jede Linie in Castrop-Rauxel abgelaufen. Sucht euch eine neue Stadt.";
 }
 
-async function save(){
+function save(){
   try{
-    await window.storage.set(KEY, JSON.stringify([...done]));
+    localStorage.setItem(KEY, JSON.stringify([...done]));
     statusEl.textContent = "Gespeichert.";
     setTimeout(()=>{ statusEl.textContent=""; }, 1600);
   }catch(e){
@@ -296,17 +296,17 @@ async function save(){
   }
 }
 
-async function load(){
+function load(){
   try{
-    const r = await window.storage.get(KEY);
-    if(r && r.value) done = new Set(JSON.parse(r.value));
+    const v = localStorage.getItem(KEY);
+    if(v) done = new Set(JSON.parse(v));
   }catch(e){ /* noch nichts gespeichert */ }
   render();
 }
 
-document.getElementById("reset").addEventListener("click", async ()=>{
+document.getElementById("reset").addEventListener("click", ()=>{
   done = new Set();
-  try{ await window.storage.delete(KEY); }catch(e){}
+  try{ localStorage.removeItem(KEY); }catch(e){}
   paint();
   statusEl.textContent = "Board zurückgesetzt.";
   setTimeout(()=>{ statusEl.textContent=""; }, 1600);
