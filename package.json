@@ -1,0 +1,9 @@
+{
+  "name": "fussbusfaehrtimmer",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Fussbus faehrt immer! - Castrop-Rauxel Buslinien-Challenge",
+  "dependencies": {
+    "@netlify/blobs": "^11.0.3"
+  }
+}

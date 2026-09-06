@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaderboard · Fußbus fährt immer!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B2D42;
+    --panel:#343651;
+    --rail:#464A66;
+    --chalk:#EDF2F4;
+    --dim:#8D99AE;
+    --signal:#EF233C;
+    --deep:#D90429;
+    --blind:#1C1E2E;
+    --strava:#FC4C02;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--chalk);
+    font-family:"Barlow","Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+  nav.nav{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    padding:16px 0;border-bottom:1px solid var(--rail);margin-bottom:22px;
+  }
+  nav.nav .brand{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+    color:var(--chalk);text-decoration:none;font-size:16px;letter-spacing:.02em;
+  }
+  nav.nav .links{display:flex;gap:20px;flex-wrap:wrap}
+  nav.nav .links a{
+    color:var(--dim);text-decoration:none;font-size:14px;font-weight:500;
+    padding:4px 1px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;
+  }
+  nav.nav .links a:hover{color:var(--chalk)}
+  nav.nav .links a.active{color:var(--signal);border-color:var(--signal)}
+
+  .blind{
+    background:var(--blind);border:1px solid var(--rail);border-radius:3px;
+    padding:18px 20px 16px;box-shadow:inset 0 0 44px rgba(239,35,60,.07);
+  }
+  .blind .route-no{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;
+    font-size:clamp(30px,6.6vw,54px);line-height:.95;color:var(--signal);
+    letter-spacing:.01em;margin:0;
+  }
+  .blind .dest{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;
+    font-size:clamp(17px,3.6vw,23px);font-weight:500;color:#B8607A;
+    margin:6px 0 0;line-height:1.2;
+  }
+  .lede{color:var(--dim);max-width:62ch;margin:22px 0 0;font-size:15px}
+  .lede b{color:var(--chalk);font-weight:600}
+
+  .connect{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:24px 0 8px;
+    background:var(--panel);border:1px solid var(--rail);border-radius:4px;padding:16px 18px;
+  }
+  .connect p{margin:0;color:var(--dim);font-size:14px;flex:1;min-width:220px}
+  .strava-btn{
+    display:inline-flex;align-items:center;gap:8px;background:var(--strava);color:#fff;
+    text-decoration:none;font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:3px;
+    transition:filter .2s;white-space:nowrap;
+  }
+  .strava-btn:hover{filter:brightness(1.08)}
+  .banner{
+    margin:16px 0 0;padding:11px 14px;border-radius:3px;font-size:13.5px;border:1px solid;
+  }
+  .banner.ok{background:rgba(56,176,0,.1);border-color:#38B000;color:#9BE38F}
+  .banner.err{background:rgba(239,35,60,.1);border-color:var(--signal);color:#F4A0AC}
+
+  h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:26px;margin:46px 0 4px;letter-spacing:.01em}
+  .sub{color:var(--dim);font-size:14px;margin:0 0 16px}
+
+  table.board{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--rail);border-radius:4px;overflow:hidden}
+  table.board th{
+    text-align:left;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;
+    font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);
+    padding:12px 16px;border-bottom:1px solid var(--rail);background:var(--blind);
+  }
+  table.board td{padding:12px 16px;border-bottom:1px solid var(--rail);font-size:15px}
+  table.board tr:last-child td{border-bottom:none}
+  table.board tr:first-child td{color:var(--signal);font-weight:600}
+  .rankno{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:19px;color:var(--dim);width:34px}
+  table.board tr:nth-child(1) .rankno{color:var(--signal)}
+  .who{display:flex;align-items:center;gap:10px}
+  .who img{width:32px;height:32px;border-radius:50%;background:var(--blind);object-fit:cover}
+  .who .noavatar{width:32px;height:32px;border-radius:50%;background:var(--blind);border:1px solid var(--rail)}
+  .kmcell{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .empty{color:var(--dim);font-size:14px;padding:30px 16px;text-align:center}
+  .synced{color:#7C86A0;font-size:12px}
+
+  @media (max-width:560px){
+    table.board th:nth-child(3), table.board td:nth-child(3){display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="nav">
+    <a class="brand" href="index.html">Fußbus fährt immer!</a>
+    <div class="links">
+      <a href="downloads.html">Downloads</a>
+      <a href="index.html">Mein Fortschritt</a>
+      <a href="tracker.html">Eigener Tracker</a>
+      <a href="leaderboard.html" class="active">Leaderboard</a>
+    </div>
+  </nav>
+
+  <header class="blind">
+    <p class="route-no">LEADERBOARD</p>
+    <p class="dest">Fußbus fährt immer! · Castrop-Rauxel · 16 Linien</p>
+  </header>
+
+  <p class="lede">Wer läuft wie viel? Verbinde deinen Strava-Account einmal — deine gelaufenen Kilometer (Walk/Hike-Aktivitäten seit Challenge-Start) werden automatisch gezählt und hier für alle sichtbar.</p>
+
+  <div class="connect">
+    <p>Dein Strava-Konto ist noch nicht verbunden. Ein Klick reicht — Zugriff kannst du jederzeit in deinen Strava-Einstellungen wieder entziehen.</p>
+    <a class="strava-btn" href="/api/strava/login">Mit Strava verbinden</a>
+  </div>
+  <div id="banner"></div>
+
+  <h2>Rangliste</h2>
+  <p class="sub">Sortiert nach gelaufenen Kilometern seit Challenge-Start.</p>
+  <div id="boardbox">
+    <p class="empty">Lade Rangliste …</p>
+  </div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const bannerEl = document.getElementById("banner");
+const strava = params.get("strava");
+if(strava === "connected"){
+  bannerEl.innerHTML = '<div class="banner ok">Strava verbunden — dein Fortschritt läuft jetzt mit.</div>';
+} else if(strava === "denied"){
+  bannerEl.innerHTML = '<div class="banner err">Verbindung abgebrochen. Du kannst es jederzeit erneut versuchen.</div>';
+} else if(strava === "error"){
+  bannerEl.innerHTML = '<div class="banner err">Verbindung zu Strava ist fehlgeschlagen. Bitte später erneut versuchen.</div>';
+}
+
+const box = document.getElementById("boardbox");
+const de = n => (Math.round(n*10)/10).toString().replace(".",",");
+
+fetch("/api/leaderboard")
+  .then(r => r.json())
+  .then(data => {
+    const entries = (data && data.entries) || [];
+    if(entries.length === 0){
+      box.innerHTML = '<p class="empty">Noch niemand verbunden. Sei die/der Erste!</p>';
+      return;
+    }
+    let rows = "";
+    entries.forEach((e,i)=>{
+      const avatar = e.avatar
+        ? '<img src="'+e.avatar+'" alt="">'
+        : '<span class="noavatar"></span>';
+      const synced = e.lastSynced ? new Date(e.lastSynced).toLocaleDateString("de-DE") : "";
+      rows += '<tr><td class="rankno">'+(i+1)+'</td>'+
+        '<td><div class="who">'+avatar+'<span>'+e.name+'</span></div></td>'+
+        '<td class="synced">'+synced+'</td>'+
+        '<td class="kmcell">'+de(e.km)+' km</td></tr>';
+    });
+    box.innerHTML =
+      '<table class="board"><thead><tr>'+
+      '<th></th><th>Name</th><th>Zuletzt sync.</th><th style="text-align:right">Kilometer</th>'+
+      '</tr></thead><tbody>'+rows+'</tbody></table>';
+  })
+  .catch(()=>{
+    box.innerHTML = '<p class="empty">Rangliste konnte nicht geladen werden.</p>';
+  });
+</script>
+</body>
+</html>

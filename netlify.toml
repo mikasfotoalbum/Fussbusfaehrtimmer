@@ -1,2 +1,20 @@
 [build]
   publish = "."
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/strava/login"
+  to = "/.netlify/functions/strava-login"
+  status = 200
+
+[[redirects]]
+  from = "/api/strava/callback"
+  to = "/.netlify/functions/strava-callback"
+  status = 200
+
+[[redirects]]
+  from = "/api/leaderboard"
+  to = "/.netlify/functions/leaderboard"
+  status = 200
