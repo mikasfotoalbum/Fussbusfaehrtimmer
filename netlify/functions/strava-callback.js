@@ -1,7 +1,12 @@
 const { leaderboardStore } = require("./lib/leaderboard-store");
 
-// Sums the distance (in meters) of all Walk/Hike activities on the
-// athlete's Strava account since the challenge start date.
+// Sums the distance (in meters) of Walk/Hike activities on the
+// athlete's Strava account since the challenge start date that are
+// tagged for the challenge (tag appears in the activity title or
+// description) — so only intentionally-logged challenge walks count,
+// not every stroll the athlete happens to record.
+const CHALLENGE_TAG = (process.env.CHALLENGE_TAG || "#fussbuscas").toLowerCase();
+
 async function sumWalkingMeters(accessToken) {
   const afterDate = process.env.CHALLENGE_START_DATE || "2026-01-01";
   const after = Math.floor(new Date(`${afterDate}T00:00:00Z`).getTime() / 1000);
@@ -18,12 +23,33 @@ async function sumWalkingMeters(accessToken) {
     const activities = await res.json();
     if (!Array.isArray(activities) || activities.length === 0) break;
     for (const a of activities) {
-      if (a.type === "Walk" || a.type === "Hike") total += a.distance || 0;
+      if (a.type !== "Walk" && a.type !== "Hike") continue;
+      if (isTagged(a)) {
+        total += a.distance || 0;
+        continue;
+      }
+      // The list endpoint only returns the title, not the
+      // description — fetch the full activity to check both.
+      const detail = await fetchActivityDetail(a.id, accessToken);
+      if (detail && isTagged(detail)) total += a.distance || 0;
     }
     if (activities.length < perPage) break;
     page++;
   }
   return total;
+}
+
+function isTagged(activity) {
+  const haystack = `${activity.name || ""} ${activity.description || ""}`.toLowerCase();
+  return haystack.includes(CHALLENGE_TAG);
+}
+
+async function fetchActivityDetail(activityId, accessToken) {
+  const res = await fetch(`https://www.strava.com/api/v3/activities/${activityId}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!res.ok) return null;
+  return res.json();
 }
 
 exports.handler = async (event) => {
